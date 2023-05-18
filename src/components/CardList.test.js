@@ -1,13 +1,25 @@
-import React from 'react';
 import { shallow } from 'enzyme';
+import React from 'react';
 import CardList from './CardList';
-const filteredRobots = [{
-    id: 1,
-    name: 'Leanne Graham',
-    username: 'Bret',
-    email: 'Sincere@april.biz'
-  }]
 
-it('renders without crashing', () => {
-  expect(shallow(<CardList robots={filteredRobots}/>)).toMatchSnapshot();
+const robots = [
+  {
+    id: 1,
+    name: 'Sasha',
+    email: 'sasha@gmail.com'
+  },
+  {
+    id: 2,
+    name: 'Misha',
+    email: 'misha@gmail.com'
+  },
+  {
+    id: 3,
+    name: 'Kolya',
+    email: 'kolya@gmail.com'
+  }
+]
+
+it('expects to render CardList', () => {
+  expect(shallow(<CardList robots={robots}/>)).toMatchSnapshot();
 });

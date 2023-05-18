@@ -1,92 +1,57 @@
-import * as reducers from './reducers'
-import * as types from './constants'
+import {
+  CHANGE_SEARCHFIELD,
+  REQUEST_ROBOTS_PENDING,
+  REQUEST_ROBOTS_SUCCESS,
+  REQUEST_ROBOTS_FAILED
+ } from './constants';
 
-const initialStateSearch = {
-  searchField: ''
-}
+import * as reducers from './reducers';
+
+import { setSearchField } from './actions';
+
 describe('searchRobots reducer', () => {
-  it('should return the initial state', () => {
-    expect(reducers.searchRobots(undefined, {})).toEqual(
-      {
-        searchField: ""
-      }
-    )
+  it ('should return the initial state', () => {
+    expect(reducers.searchRobots(undefined, {})).toEqual({ searchField: '' });
   })
 
-  it('should handle CHANGE_SEARCHFIELD', () => {
-    expect(
-      reducers.searchRobots(initialStateSearch, {
-        type: types.CHANGE_SEARCHFIELD,
-        payload: 'abc'
-      })
-    ).toEqual(
-      {
-        searchField: "abc"
-      }
-    )
+  it ('should return the provided state in case unkown actio type', () => {
+    expect(reducers.searchRobots({searchField: 'test'}, undefined)).toEqual({searchField: 'test'});
+  })
+
+  it ('should update seachField on CHANGE_SEARCHFIELD action type', () => {
+    expect(reducers.searchRobots(undefined, { type: CHANGE_SEARCHFIELD, payload: 'test'})).toEqual({ searchField: 'test' });
+    expect(reducers.searchRobots(undefined, setSearchField('test'))).toEqual({ searchField: 'test' });
   })
 })
 
-const initialStateRobots = {
-  robots: [],
-  isPending: true
-}
 describe('requestRobots reducer', () => {
-  it('should return the initial state', () => {
-    expect(reducers.requestRobots(undefined, {})).toEqual(
-      {
-        robots: [],
-        isPending: true
-      }
-    )
+  
+  const initialState = {
+    robots: [],
+    isPending: false
+  }
+  
+  it ('should return initial state if not provided', () => {
+    expect(reducers.requestRobots(undefined, {})).toEqual(initialState);
   })
 
-  it('should handle REQUEST_ROBOTS_PENDING action', () => {
-    expect(
-      reducers.requestRobots(initialStateRobots, {
-        type: types.REQUEST_ROBOTS_PENDING,
-        payload: {isPending: true}
-      })
-    ).toEqual(
-      {
-        robots: [],
-        isPending: true
-      }
-    )
+  it ('should return provided state if action not defined', () => {
+    expect(reducers.requestRobots(initialState, undefined)).toEqual(initialState);
   })
-  it('should handle REQUEST_ROBOTS_SUCCESS action', () => {
-    expect(
-      reducers.requestRobots(initialStateRobots, {
-        type: types.REQUEST_ROBOTS_SUCCESS,
-        payload: [{
-            id: '123',
-            name: 'test',
-            email: 'j@jmail.com'
-          }]
-      })
-    ).toEqual(
-      {
-        robots: [{
-          id: '123',
-          name: 'test',
-          email: 'j@jmail.com'
-        }],
-        isPending: false
-      }
-    )
+
+  it ('should set isPending to true for REQUEST_ROBOTS_PENDING action', () => {
+    expect(reducers.requestRobots(initialState, {type: REQUEST_ROBOTS_PENDING}))
+    .toEqual({robots: [], isPending: true});
   })
-  it('should handle REQUEST_ROBOTS_FAILED action', () => {
-    expect(
-      reducers.requestRobots(initialStateRobots, {
-        type: types.REQUEST_ROBOTS_FAILED,
-        payload: 'NOOO'
-      })
-    ).toEqual(
-      {
-        error: 'NOOO',
-        robots: [],
-        isPending: true
-      }
-    )
+
+  it ('should set correct state for REQUEST_ROBOTS_SUCCESS action', () => {
+    expect(reducers.requestRobots(initialState, {type: REQUEST_ROBOTS_SUCCESS, payload: [1, 2, 3]}))
+    .toEqual({robots: [1, 2, 3], isPending: false});
+  })
+
+  it ('should set correct state for REQUEST_ROBOTS_FAILED action', () => {
+    expect(reducers.requestRobots(initialState, {type: REQUEST_ROBOTS_FAILED, payload: "test error message"}))
+    .toEqual({robots: [], error: "test error message", isPending: false});
   })
 })
+
