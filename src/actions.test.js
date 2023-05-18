@@ -44,7 +44,6 @@ describe('actions', () => {
     return store.dispatch(actions.requestRobots())
       .then(() => {
         const action = store.getActions();
-        console.log(action);
         expect(action[0]).toEqual({type: REQUEST_ROBOTS_PENDING});
         expect(action[1]).toEqual({ type: REQUEST_ROBOTS_FAILED, payload: new Error(errorMessage)});
       })
