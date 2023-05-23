@@ -24,7 +24,7 @@ describe('actions', () => {
         email: "misha@email.com"
       }
     ];
-    window.fetch = jest.fn().mockReturnValue(Promise.resolve(mockResponse(200, null, JSON.stringify(robots))));
+    window.fetch = jest.fn().mockReturnValue(Promise.resolve(new Response(JSON.stringify(robots), {status: 200})));
 
     const store = mockStore();
     return store.dispatch(actions.requestRobots())
@@ -49,13 +49,3 @@ describe('actions', () => {
       })
   })
 })
-
-const mockResponse = (status, statusText, response) => {
-  return new window.Response(response, {
-    status: status,
-    statusText: statusText,
-    headers: {
-      'Content-type': 'application/json'
-    }
-  });
-};
