@@ -1,4 +1,4 @@
-import { apiCall, apiCallAsync } from './api/api'
+import { apiCallAsync } from './api/api'
 import {
   CHANGE_SEARCHFIELD,
   REQUEST_ROBOTS_PENDING,
